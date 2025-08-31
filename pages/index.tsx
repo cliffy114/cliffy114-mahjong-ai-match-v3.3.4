@@ -39,13 +39,17 @@ export default function Home(){
     });
   }
 
-  function startNewMatch(){
-    const w = generateWall();
-    const ps = dealHands(w, ['kimi','kimi2','gemini','grok']);
-    setPlayers(ps); setWall(w);
-    appendLogs(['新比赛开始（轮次清零，分数重置）']);
-    setHandNo(0); setMatchActive(true); setHandRunning(false);
-  }
+ function startNewMatch() {
+  setLog([]); // ✅ 清空旧日志
+  const w = generateWall();
+  const ps = dealHands(w, ['kimi','kimi2','gemini','grok']);
+  setPlayers(ps);
+  setWall(w);
+  appendLogs(['新比赛开始（轮次清零，分数重置）']);
+  setHandNo(0);
+  setMatchActive(true);
+  setHandRunning(false);
+}
 
   function startNextHand(){
     if(!matchActive){ alert('请先开始新比赛'); return; }
