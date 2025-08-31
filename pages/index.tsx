@@ -14,6 +14,7 @@ export default function Home(){
   const [matchActive, setMatchActive] = useState(false);
   const [handRunning, setHandRunning] = useState(false);
   const [intervalMs, setIntervalMs] = useState(1000);
+  const [intervalInput, setIntervalInput] = useState("1000");
   const [showHands, setShowHands] = useState(true);
   const [keys, setKeys] = useState<{kimi?:string; kimi2?:string; gemini?:string; grok?:string}>({});
 
@@ -128,7 +129,25 @@ export default function Home(){
     <div className="card">
       <div className="flex items-center gap-3" style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
         <label className="small">最大轮次：<input className="w-24" value={maxHands} onChange={e=>setMaxHands(Math.max(1,parseInt(e.target.value||'0',10)||1))} /></label>
-        <label className="small">出牌间隔(ms)：<input className="w-24" value={intervalMs} onChange={e=>setIntervalMs(Math.max(100,parseInt(e.target.value||'100',10)||100))} /></label>
+        <label className="small">
+  出牌间隔(ms)：
+  <input
+    className="w-24"
+    type="number"
+    min="100"
+    step="100"
+    value={intervalInput}
+    onChange={e => {
+      const val = e.target.value;
+      setIntervalInput(val);
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed >= 100) {
+        setIntervalMs(parsed);
+      }
+    }}
+  />
+</label>
+
         <button className="btn" onClick={startNewMatch}>开始新比赛</button>
         <button className="btn" onClick={startNextHand} disabled={!matchActive || handRunning || handNo>=maxHands}>开始新一轮</button>
         <label className="small"><input type="checkbox" checked={showHands} onChange={e=>setShowHands(e.target.checked)} /> 显示手牌</label>
